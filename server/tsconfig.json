@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "moduleResolution": "Node",
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "noFallthroughCasesInSwitch": true,
+      "removeComments": true,
+      "strictNullChecks": true,
+      "preserveConstEnums": true,
+      "sourceMap": true,
+      "target": "es2015",
+      "outDir": "./build",
+      "rootDir": "./src",
+      "lib": [
+        "es5",
+        "es6",
+        "dom",
+        "es2015.core",
+        "es2015.collection",
+        "es2015.generator",
+        "es2015.iterable",
+        "es2015.promise",
+        "es2015.proxy",
+        "es2015.reflect",
+        "es2015.symbol",
+        "es2015.symbol.wellknown",
+        "esnext.asynciterable"
+      ],
+      "typeRoots": [
+        "node_modules/@types",
+        "ts-definitions"
+      ]
+  },
+  "include": [
+      "src/**/*.ts"
+  ],
+  "exclude": [
+      "node_modules"
+  ]
+}

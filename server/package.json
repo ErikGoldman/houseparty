@@ -1,0 +1,36 @@
+{
+  "name": "houseparty-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node build/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErikGoldman/houseparty.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErikGoldman/houseparty/issues"
+  },
+  "homepage": "https://github.com/ErikGoldman/houseparty#readme",
+  "dependencies": {
+    "@types/express": "^4.0.39",
+    "@types/express-graphql": "0.0.35",
+    "@types/graphql": "^0.11.6",
+    "@types/passport": "^0.4.1",
+    "@types/source-map-support": "^0.4.0",
+    "@types/winston": "^2.3.7",
+    "express": "^4.16.2",
+    "express-graphql": "^0.6.11",
+    "graphql": "^0.11.7",
+    "passport": "^0.4.0",
+    "source-map-support": "^0.5.0",
+    "typescript": "^2.6.1",
+    "winston": "^2.4.0"
+  }
+}
