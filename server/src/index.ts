@@ -41,12 +41,11 @@ Connect()
     }
     const redisAuth = redisInfo.auth.split(":");
 
-    redisCreds.host = redisInfo.host as string;
+    redisCreds.host = redisInfo.hostname as string;
     redisCreds.port = parseInt(redisInfo.port as string, 10);
     redisCreds.pass = redisAuth[1] as string;
   }
 
-  Log.info("Loading redis", { redisCreds: JSON.stringify(redisCreds, undefined, 2) });
   app.use(expressSession({
     store: new RedisStore({
       disableTTL: true,
