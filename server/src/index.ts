@@ -48,6 +48,7 @@ Connect()
     redisCreds.pass = redisAuth[1] as string;
   }
 
+  Log.info("Loading redis", { redisCreds: JSON.stringify(redisCreds, undefined, 2) });
   app.use(expressSession({
     store: new RedisStore({
       disableTTL: true,
