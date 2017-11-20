@@ -6,6 +6,7 @@ import * as expressSession from "express-session";
 import * as _RedisStore from "connect-redis";
 import * as passport from "passport";
 import * as path from "path";
+import * as url from "url";
 
 import * as graphqlHTTP from "express-graphql";
 
@@ -25,11 +26,35 @@ Connect()
   const port = process.env.PORT || 8080;
   const app = express();
 
+  const redisCreds = {
+    host: "localhost",
+    port: 6379,
+    db: 0,
+    pass: "",
+  };
+
+  const redisUrl = process.env.REDIS_URL;
+  if (redisUrl) {
+    const redisInfo = url.parse(redisUrl);
+    if (!redisInfo.auth) {
+      Log.error("No auth information in redis url", { redisUrl });
+      throw new Error("No auth information in redis url");
+    }
+    const redisAuth = redisInfo.auth.split(":");
+
+    redisCreds.host = redisInfo.host as string;
+    redisCreds.port = parseInt(redisInfo.port as string, 10);
+    redisCreds.db = parseInt(redisAuth[0] as string, 10);
+    redisCreds.pass = redisAuth[1] as string;
+  }
+
   app.use(expressSession({
     store: new RedisStore({
       disableTTL: true,
-      host: "localhost",
-      port: 6379,
+      host: redisCreds.host,
+      port: redisCreds.port,
+      db: redisCreds.db,
+      pass: redisCreds.pass,
     }),
     secret: process.env.SESSION_SECRET || "sessionSecret",
   }));
