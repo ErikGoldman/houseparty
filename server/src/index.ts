@@ -29,7 +29,6 @@ Connect()
   const redisCreds = {
     host: "localhost",
     port: 6379,
-    db: 0,
     pass: "",
   };
 
@@ -44,7 +43,6 @@ Connect()
 
     redisCreds.host = redisInfo.host as string;
     redisCreds.port = parseInt(redisInfo.port as string, 10);
-    redisCreds.db = parseInt(redisAuth[0] as string, 10);
     redisCreds.pass = redisAuth[1] as string;
   }
 
@@ -54,7 +52,7 @@ Connect()
       disableTTL: true,
       host: redisCreds.host,
       port: redisCreds.port,
-      db: redisCreds.db,
+      db: 0,
       pass: redisCreds.pass,
     }),
     secret: process.env.SESSION_SECRET || "sessionSecret",
