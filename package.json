@@ -14,8 +14,8 @@
     "client-build": "npm --prefix ./client run build",
     "postinstall": "npm run server-install && npm run server-build && npm run client-install && npm run client-build",
     "start": "npm --prefix ./server run start",
-    "server-dev": "nodemon --watch \"server/src\" --exec '(npm run server-build && npm run start); exit 0'",
-    "client-dev": "nodemon --watch \"client/src\" --exec 'npm run client-build; exit 0'",
+    "server-dev": "nodemon -e ts --watch \"server/src\" --exec '(npm run server-build && npm run start); exit 0'",
+    "client-dev": "nodemon -e ts,tsx,css --watch \"client/src\" --exec 'npm run client-build; exit 0'",
     "dev": "concurrently --kill-others 'npm run server-dev' 'npm run client-dev'"
   },
   "repository": {
@@ -29,6 +29,10 @@
   },
   "homepage": "https://github.com/ErikGoldman/houseparty#readme",
   "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "concurrently": "^3.5.0",
     "nodemon": "^1.12.1"
   }
