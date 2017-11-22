@@ -1,0 +1,63 @@
+.home {
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("./frontpage.jpg");
+  padding-top: 20%;
+  text-align: center;
+}
+
+.home-main h1 {
+  font-size: 64px;
+  color: white;
+}
+.home-login-button {
+  padding: 8px 96px;
+  font-size: 24px;
+  margin-top: 24px;
+}
+
+.pt-navbar-heading a {
+  color: black;
+}
+.pt-navbar-heading a:hover {
+  text-decoration: none;
+}
+
+.pt-navbar .profile-photo {
+  position: relative;
+  top: 3px;
+}
+
+.navbar-name {
+  position: relative;
+  top: -2px;
+  padding-left: 4px;
+}
+
+.profile-photo {
+  height: 20px;
+  width: 20px;
+  border-radius: 10px;
+}
+
+.main-content {
+  padding-top: 48px;
+  padding-left: 32px;
+}
+
+.host-approval-table {
+  padding-top: 16px;
+  max-width: 1200px;
+}
+
+.host-approval-table table {
+  border-collapse: collapse;
+}
+
+.host-approval-table td {
+  border: 1px solid black;
+  padding: 4px 16px;
+}
+
+.host-approval-table tr {
+  border: 1px solid black;
+}

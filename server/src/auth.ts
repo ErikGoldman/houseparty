@@ -23,8 +23,12 @@ passport.use(new GoogleOAuth2.Strategy({
       if (!user) {
         user = new User();
         user.displayName = profile.displayName;
-        user.email = profile.emails[0];
+        user.email = profile.emails[0].value;
+        user.givenName = profile.name.givenName;
+        user.familyName = profile.name.familyName;
         user.googleId = profile.id;
+        user.photoUrl = profile.photos.length > 0 ? profile.photos[0].value : null;
+        user.isHost = false;
         return user.save();
       }
       return user;
