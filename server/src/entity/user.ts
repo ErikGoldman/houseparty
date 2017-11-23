@@ -34,15 +34,31 @@ export class User {
   @Column({ nullable: true })
   housepartyId: number;
 
-  static getById(userId: number) {
+  static getById(reqUser: User | undefined, userId: number, ignorePermission?: boolean) {
+    if (!ignorePermission && !reqUser) {
+      throw new Error("Permissons error");
+    }
     return Connection.getRepository(User).findOneById(userId);
   }
 
-  static getByGoogleId(googleId: string) {
+  static getByEmail(reqUser: User | undefined, email: string, ignorePermission?: boolean) {
+    if (!ignorePermission && !reqUser) {
+      throw new Error("Permissons error");
+    }
+    return Connection.getRepository(User).findOne({ email });
+  }
+
+  static getByGoogleId(reqUser: User | undefined, googleId: string, ignorePermission?: boolean) {
+    if (!ignorePermission && !reqUser) {
+      throw new Error("Permissons error");
+    }
     return Connection.getRepository(User).findOne({ where: { googleId }});
   }
 
-  static getSignedUpUsers() {
+  static getSignedUpUsers(reqUser: User | undefined) {
+    if (!reqUser || !reqUser.isAdmin()) {
+      throw new Error("Permissons error");
+    }
     return Connection.getRepository(User).find({ where: { hasSignedUp: true, }});
   }
 
@@ -50,8 +66,8 @@ export class User {
     return ADMINS.find((u) => u === this.email) !== undefined;
   }
 
-  getHouseparty() {
-    return Houseparty.getById(this.housepartyId);
+  getHouseparty(reqUser: User | undefined) {
+    return Houseparty.getById(reqUser, this.housepartyId);
   }
 
   save() {

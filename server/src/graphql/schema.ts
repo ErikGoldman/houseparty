@@ -1,11 +1,13 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
 
 import { SetHousepartyDateMutation, SignedUpUsersQuery, UserQuery } from "../graphql/user";
-import { HousepartyQuery } from "../graphql/houseparty";
+import { DeleteInviteMutation, HousepartyQuery, SaveInviteMutation } from "../graphql/houseparty";
 
 export const GQLSchema = new GraphQLSchema({
   mutation: new GraphQLObjectType({
     fields: {
+      deleteInvite: DeleteInviteMutation,
+      saveInvite: SaveInviteMutation,
       setHousepartyDate: SetHousepartyDateMutation,
     },
     name: "RootMutationType",

@@ -1,5 +1,5 @@
 export interface IUser {
-  donationAmount: number;
+  donatedAmount: number;
   displayName: string;
   email: string;
   photoUrl: string;
@@ -9,9 +9,16 @@ export interface IUser {
   houseparty: IHouseparty | null;
 }
 
+export interface IInvite {
+  id: number;
+  user: IUser;
+  houseparty: IHouseparty;
+  date: string;
+}
+
 export interface IHouseparty {
   id: number;
   userId: number;
   date: string;
-  invites: IUser[];
+  invites: IInvite[];
 }

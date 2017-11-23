@@ -10,7 +10,7 @@ export const GraphUser = new GraphQLObjectType({
     displayName: { type: GraphQLString, },
     donatedAmount: {
       resolve: (root: User, {}, req: Express.Request, fieldASTs: any) => {
-        return null;
+        return 0;
       },
       type: GraphQLFloat
     },
@@ -20,7 +20,7 @@ export const GraphUser = new GraphQLObjectType({
     hasSignedUp: { type: GraphQLBoolean, },
     houseparty: {
       resolve: (user: User, {}, req: Express.Request, fieldASTs: any) => {
-        return user.getHouseparty();
+        return user.getHouseparty(req.user);
       },
       type: require("./houseparty").GraphHouseparty,
     },
@@ -39,7 +39,7 @@ export const SignedUpUsersQuery = {
   resolve: (
     root: any, {}, req: Express.Request, fieldASTs: any,
   ) => {
-    return User.getSignedUpUsers()
+    return User.getSignedUpUsers(req.user)
   },
   type: new GraphQLList(GraphUser),
 };
@@ -58,7 +58,7 @@ export const SetHousepartyDateMutation = {
   resolve: (
     root: any, { date, userId }: { date: string, userId: number }, req: Express.Request, fieldASTs: any,
   ) => {
-    return User.getById(userId)
+    return User.getById(req.user, userId)
     .then((user) => {
       if (!user) {
         throw new Error("could not find user");
@@ -75,7 +75,7 @@ export const SetHousepartyDateMutation = {
         });
       }
 
-      return user.getHouseparty()
+      return user.getHouseparty(req.user)
       .then((houseparty) => {
         if (!houseparty) {
           throw new Error("couldn't find houseparty");
@@ -105,7 +105,7 @@ export const UserQuery = {
     if (!id || (req.user && req.user.id === id)) {
       return req.user;
     }
-    return User.getById(id)
+    return User.getById(req.user, id)
   },
   type: GraphUser,
 };

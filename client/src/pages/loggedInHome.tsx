@@ -3,6 +3,7 @@ import { compose, graphql, OptionProps } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { IHouseparty, IUser } from "../entities";
+import Party from "../components/party";
 
 interface IProps {
   user?: IUser;
@@ -26,26 +27,24 @@ export class LoggedInHome extends React.Component<IProps, IState> {
 
     if (this.props.houseparty === null) {
       housepartyBody = (
-        <h3>
-          You aren't currently registered to host a houseparty! Please <a href="mailto:sonja@sonja2018.org">message
-          Sonja</a> and annoy her until she confirms a date with you.
-        </h3>
+        <div className="host-main">
+          <h3>
+            You aren't currently registered to host a houseparty! Please <a href="mailto:sonja@sonja2018.org">message
+            Sonja</a> and annoy her until she confirms a date with you.
+          </h3>
+        </div>
       );
     } else {
       housepartyBody = (
         <div>
-          <div className="houseparty-date">{this.props.houseparty.date}</div>
-          Bloop
+          <Party />
         </div>
       );
     }
 
     return (
       <div>
-        <h1>Your Houseparty</h1>
-        <div className="host-main">
-          {housepartyBody}
-        </div>
+        {housepartyBody}
       </div>
     );
   }
@@ -53,13 +52,18 @@ export class LoggedInHome extends React.Component<IProps, IState> {
 
 const GetHousepartyQuery = gql`
 query {
-  houseparty {
+  user {
     id
-    date
-    invites {
+    houseparty {
       id
-      displayName
-      email
+      date
+      invites {
+        id
+        user {
+          id
+          donatedAmount
+        }
+      }
     }
   }
 }
@@ -69,15 +73,15 @@ const WrappedComponent = compose(
   graphql(
     GetHousepartyQuery,
     {
-      props: (info: OptionProps<IProps, { houseparty?: IHouseparty }>) => {
-        if (!info.data || info.data.houseparty === undefined) {
+      props: (info: OptionProps<IProps, { user?: IUser }>) => {
+        if (!info.data || info.data.user === undefined) {
           return {
-            pendingUsers: undefined,
+            houseparty: undefined,
           };
         }
 
         return {
-          houseparty: info.data.houseparty,
+          houseparty: info.data.user.houseparty,
         };
       },
     },

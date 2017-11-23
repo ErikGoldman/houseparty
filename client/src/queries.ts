@@ -14,9 +14,13 @@ query {
       date
       invites {
         id
-        donatedAmount
-        displayName
-        email
+        date
+        user {
+          id
+          donatedAmount
+          displayName
+          email
+        }
       }
     }
   }

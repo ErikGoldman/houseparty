@@ -18,7 +18,7 @@ passport.use(new GoogleOAuth2.Strategy({
     accessToken: string, refreshToken: string | void, profile: any,
     done: (err?: Error, user?: any) => any,
   ) => {
-    return User.getByGoogleId(profile.id)
+    return User.getByGoogleId(undefined, profile.id, true)
     .then((user) => {
       if (!user) {
         user = new User();
@@ -45,7 +45,7 @@ passport.serializeUser((user: User, cb) => {
   cb(null, user.id);
 });
 passport.deserializeUser((userId: number, cb) => {
-  User.getById(userId)
+  User.getById(undefined, userId, true)
   .then((user) => {
     if (!user) {
       Log.error("User not found", { userId });

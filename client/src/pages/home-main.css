@@ -1,3 +1,6 @@
+*:focus {
+  outline: none;
+}
 .home {
   height: 100%;
   background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("./frontpage.jpg");
@@ -72,4 +75,39 @@
 
 .houseparty-invite-list {
   padding-top: 16px;
+}
+
+.invite-table-action {
+  min-width: 120px;
+  text-align: center;
+}
+.invite-table-name {
+  min-width: 360px;
+}
+.invite-table-email {
+  min-width: 360px;
+}
+.invite-table-donated {
+  min-width: 120px;
+}
+
+.invite-table {
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.invite-table input {
+  background: rgba(0, 0, 0, 0);
+  border: 0;
+  width: 100%;
+  padding: 4px;
+}
+.invite-table td, th {
+  border: 1px solid #ddd;
+  padding: 0;
+}
+.invite-table div {
+  padding: 4px;
+}
+.invite-edit-row {
+  background: #fbfacf;
 }
