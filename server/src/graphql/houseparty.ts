@@ -1,6 +1,7 @@
 import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLList, } from "graphql";
 
 import { User } from "../entity/user";
+import { Houseparty } from "../entity/houseparty";
 
 export const GraphHouseparty = new GraphQLObjectType({
  name: 'Houseparty',
@@ -8,7 +9,12 @@ export const GraphHouseparty = new GraphQLObjectType({
    id: { type: GraphQLInt, },
    host: { type: require("./user").GraphUser, },
    date: { type: GraphQLString, },
-   invites: { type: new GraphQLList(require("./user").GraphUser), },
+   invites: {
+    resolve: (houseparty: Houseparty, {}, req: Express.Request, fieldASTs: any) => {
+      return houseparty.invites || [];
+    },
+     type: new GraphQLList(require("./user").GraphUser)
+    },
  }),
 });
 

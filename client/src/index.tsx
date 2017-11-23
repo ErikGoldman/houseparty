@@ -12,6 +12,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 
 import Home from "./pages/home";
+import PartyPage from "./pages/party";
 
 const NotFound404 = () => (
   <div>
@@ -31,6 +32,7 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <Router>
         <Switch>
+          <Route path="/party/:userId" component={PartyPage} />
           <Route exact={true} path="/" component={Home} />
           {/* always keep this last */ /* tslint:disable-line */ }
           <Route path="*" component={NotFound404} />
