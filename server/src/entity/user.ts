@@ -1,6 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 import { Connection } from "../db";
+import { Houseparty } from "./houseparty";
 
 const ADMINS = JSON.parse(process.env.ADMIN_EMAILS || "[\"erik.goldman@gmail.com\"]") as string[]
 
@@ -10,18 +11,18 @@ export class User {
   id: number;
 
   @Column()
-  isHost: boolean;
+  hasSignedUp: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   googleId: string;
 
-  @Column()
+  @Column({ nullable: true })
   displayName: string;
 
-  @Column()
+  @Column({ nullable: true })
   givenName: string;
 
-  @Column()
+  @Column({ nullable: true })
   familyName: string;
 
   @Column({ nullable: true })
@@ -30,35 +31,30 @@ export class User {
   @Column()
   email: string;
 
+  @Column({ nullable: true })
+  housepartyId: number;
+
   static getById(userId: number) {
     return Connection.getRepository(User).findOneById(userId);
   }
 
   static getByGoogleId(googleId: string) {
-    return Connection.getRepository(User).findOne({ googleId });
+    return Connection.getRepository(User).findOne({ where: { googleId }});
   }
 
-  static getPendingUsers() {
-    return Connection.getRepository(User).find({ isHost: false });
-  }
-
-  static approveHost(userId: number) {
-    return Connection.getRepository(User).findOneById(userId)
-    .then((user) => {
-      if (!user) {
-        throw new Error("User not found");
-      }
-
-      user.isHost = true;
-      return user.save();
-    });
+  static getSignedUpUsers() {
+    return Connection.getRepository(User).find({ where: { hasSignedUp: true, }});
   }
 
   isAdmin() {
     return ADMINS.find((u) => u === this.email) !== undefined;
   }
 
+  getHouseparty() {
+    return Houseparty.getById(this.housepartyId);
+  }
+
   save() {
-    return Connection.getRepository(User).save(this);
+    return Connection.manager.save(this);
   };
 }

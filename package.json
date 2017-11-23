@@ -14,7 +14,8 @@
     "client-build": "npm --prefix ./client run build",
     "postinstall": "npm run server-install && npm run server-build && npm run client-install && npm run client-build",
     "start": "npm --prefix ./server run start",
-    "server-dev": "nodemon -e ts --watch \"server/src\" --exec '(npm run server-build && npm run start); exit 0'",
+    "start-dev": "npm --prefix ./server run start-dev",
+    "server-dev": "nodemon -e ts --watch \"server/src\" --exec '(npm run server-build && npm run start-dev); exit 0'",
     "client-dev": "nodemon -e ts,tsx,css --watch \"client/src\" --exec 'npm run client-build; exit 0'",
     "dev": "concurrently --kill-others 'npm run server-dev' 'npm run client-dev'"
   },

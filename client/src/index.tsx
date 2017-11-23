@@ -11,7 +11,6 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 
-import ApproveHosts from "./pages/approveHosts";
 import Home from "./pages/home";
 
 const NotFound404 = () => (
@@ -32,7 +31,6 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <Router>
         <Switch>
-          <Route exact={true} path="/approve" component={ApproveHosts} />
           <Route exact={true} path="/" component={Home} />
           {/* always keep this last */ /* tslint:disable-line */ }
           <Route path="*" component={NotFound404} />

@@ -61,3 +61,7 @@
 .host-approval-table tr {
   border: 1px solid black;
 }
+
+.host-main {
+  margin-top: 32px;
+}

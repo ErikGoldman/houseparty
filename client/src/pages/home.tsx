@@ -50,7 +50,6 @@ query {
     id
     displayName
     email
-    isHost
     isAdmin
   }
 }`;

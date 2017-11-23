@@ -5,6 +5,8 @@ import * as PostgressConnectionStringParser from 'pg-connection-string';
 import * as typeorm from "typeorm";
 
 import { User } from "./entity/user";
+import { Invite } from "./entity/invite";
+import { Houseparty } from "./entity/houseparty";
 
 export let Connection: typeorm.Connection;
 
@@ -29,6 +31,8 @@ export function Connect() {
     password: connectionOptions.password as string,
     database: connectionOptions.database as string,
     entities: [
+      Houseparty,
+      Invite,
       User,
     ],
     synchronize: true,

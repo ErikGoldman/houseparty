@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import { Link } from "react-router-dom";
 
 import { IUser } from "../entities";
-import PendingHostApprovalQuery from "../queries/pendingHostApprovals";
 
 interface IProps {
   pendingUsers?: IUser[];
@@ -19,31 +18,12 @@ class NavBar extends React.Component<IProps, IState> {
       return <div />;
     }
 
-    const numHostsToApprove = this.props.pendingUsers ? this.props.pendingUsers.length : 0;
-
-    const navButtons = this.props.user.isAdmin ? (
-      <span>
-        <Link to="/approve">
-          <button className="pt-button pt-minimal pt-icon-notifications">
-            Hosts to approve { numHostsToApprove > 0 ? <span className="pt-tag pt-intent-danger">{numHostsToApprove}</span> : "" }
-          </button>
-        </Link>
-        <Link to="/hosts">
-          <button className="pt-button pt-minimal pt-icon-walk">Hosts</button>
-        </Link>
-      </span>
-    ) : (
-      <span>
-      </span>
-    );
-
     return (
       <nav className="pt-navbar .modifier">
         <div className="pt-navbar-group pt-align-left">
           <div className="pt-navbar-heading"><Link to="/">Houseparty Organizer</Link></div>
         </div>
         <div className="pt-navbar-group pt-align-right">
-          {navButtons}
           <span className="pt-navbar-divider"></span>
           <div>
             <img className="profile-photo" src={this.props.user.photoUrl} />
@@ -62,7 +42,6 @@ query {
     displayName
     photoUrl
     email
-    isHost
     isAdmin
   }
 }`;
@@ -79,22 +58,6 @@ const WrappedNavBar = compose(
 
         return {
           user: info.data.user || null,
-        };
-      },
-    },
-  ),
-  graphql(
-    PendingHostApprovalQuery,
-    {
-      props: (info: OptionProps<IProps, { pendingUsers?: IUser[] }>) => {
-        if (!info.data || info.data.pendingUsers === undefined) {
-          return {
-            pendingUsers: undefined,
-          };
-        }
-
-        return {
-          pendingUsers: info.data.pendingUsers || [],
         };
       },
     },

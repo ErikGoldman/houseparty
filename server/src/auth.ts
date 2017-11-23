@@ -28,7 +28,7 @@ passport.use(new GoogleOAuth2.Strategy({
         user.familyName = profile.name.familyName;
         user.googleId = profile.id;
         user.photoUrl = profile.photos.length > 0 ? profile.photos[0].value : null;
-        user.isHost = false;
+        user.hasSignedUp = true;
         return user.save();
       }
       return user;

@@ -1,17 +1,19 @@
 import { GraphQLObjectType, GraphQLSchema } from "graphql";
 
-import { ApproveHostMutation, PendingUserQuery, UserQuery } from "../graphql/user";
+import { SetHousepartyDateMutation, SignedUpUsersQuery, UserQuery } from "../graphql/user";
+import { HousepartyQuery } from "../graphql/houseparty";
 
 export const GQLSchema = new GraphQLSchema({
   mutation: new GraphQLObjectType({
     fields: {
-      approveHost: ApproveHostMutation,
+      setHousepartyDate: SetHousepartyDateMutation,
     },
     name: "RootMutationType",
   }),
   query: new GraphQLObjectType({
     fields: {
-      "pendingUsers": PendingUserQuery,
+      "signedUpUsers": SignedUpUsersQuery,
+      "houseparty": HousepartyQuery,
       "user": UserQuery,
     },
     name: "RootQueryType",
