@@ -56,32 +56,31 @@ const scrapePage = async (page: puppeteer.Page, pageNum: number) => {
   await page.waitFor(buttonSelector);
 
   const links: string[] = await page.$$eval(buttonSelector, buttons => buttons.map((btn: any) => btn.href));
-  //links.map((donationLink, index) => {
-  return links.slice(0, 1).map((donationLink, index) => {
+  for (let i=0; i < links.length; i++) {
+    const donationLink = links[i];
+
     const donationParts = donationLink.match(DONATION_REGEX);
     if (donationParts === null || donationParts.length < 3) {
       throw new Error(`Can't parse donation URL ${donationLink}`);
     }
 
     const donationId = `${donationParts[1]}:${donationParts[2]}`;
-    return Donation.existsInDb(donationId)
-    .then(async (doesExist) => {
-      if (!doesExist) {
-        if (Math.random() > 0.35) {
-          (async () => {
-            console.log("Sleeping");
-            await new Promise(resolve => setTimeout(resolve, 1000 * (2.0 + (Math.random() * 3))));
-          })();
-        }
-        await getDonationInfo(page, donationLink, donationId);
-        if (index === links.length - 1) {
-          console.log(`Got to last link and we didn't have it -- moving to page ${pageNum + 1}`);
-          // we didn't have info for the last item -- go back one page, too
-          // scrapePage(page, pageNum + 1);
-        }
+    const doesExist = await Donation.existsInDb(donationId);
+    if (!doesExist) {
+      if (Math.random() > 0.35) {
+        (async () => {
+          console.log("Sleeping");
+          await new Promise(resolve => setTimeout(resolve, 1000 * (2.0 + (Math.random() * 3))));
+        })();
       }
-    });
-  });
+      await getDonationInfo(page, donationLink, donationId);
+      if (i === links.length - 1) {
+        console.log(`Got to last link and we didn't have it -- moving to page ${pageNum + 1}`);
+        // we didn't have info for the last item -- go back one page, too
+        // scrapePage(page, pageNum + 1);
+      }
+    }
+  }
 }
 
 export const scrapeNationbuilder = (req: express.Request, res: express.Response) => {
