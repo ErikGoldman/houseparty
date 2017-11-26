@@ -11,9 +11,9 @@ export class Donation {
   amount: number;
 
   @Column({ nullable: true })
-  email: string;
+  email: string | null;
 
-  @Column({ nullable: true })
+  @Column()
   name: string;
 
   static existsInDb(nbId: string) {

@@ -22,8 +22,9 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
   let email = null;
   if (emailWithMailto.length !== 1) {
     console.log(`Error: could not get email from ${profileLinks}`);
+  } else {
+    email = emailWithMailto[0].substr("mailto:".length);
   }
-  email = emailWithMailto[0].substr("mailto:".length);
 
   const donationRowInfo: string[] = await page.$$eval(".bs-row h2", elems => elems.map((e: any) => e.innerHTML));
   if (donationRowInfo.length !== 1) {
