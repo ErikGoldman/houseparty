@@ -10,7 +10,7 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
 
   await page.goto(donationUrl);
   await page.waitFor(".signup-name");
-  const nameField = await page.$eval(".signup-name", elem => elem.text.match(/\s*(.*)\s*\(.*\)/));
+  const nameField = await page.$eval(".signup-name", elem => elem.text().match(/\s*(.*)\s*\(.*\)/));
   if (nameField === null) {
     console.log(`Error: could not parse name ${nameField}`);
     return;
