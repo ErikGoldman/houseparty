@@ -15,6 +15,8 @@ const scrapePage = (page: puppeteer.Page, pageNum: number) => {
 
 export const scrapeNationbuilder = (req: express.Request, res: express.Response) => {
   (async () => {
+    console.log("Scraping nationbuilder");
+
     if (!process.env.NATIONBUILDER_EMAIL || !process.env.NATIONBUILDER_PASSWORD) {
       throw new Error("you need to specify a nationbuilder user or password in env vars to use this");
     }
@@ -25,6 +27,7 @@ export const scrapeNationbuilder = (req: express.Request, res: express.Response)
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
+    console.log("Beginning login");
     const page = await browser.newPage();
     await page.goto("https://sonja2018.nationbuilder.com/forms/user_sessions/new");
 
@@ -37,11 +40,13 @@ export const scrapeNationbuilder = (req: express.Request, res: express.Response)
     await page.waitFor(passwordSelector);
     await page.type(passwordSelector, nbPassword);
 
-    const loginSelector = "$('.submit-button[value=\"Sign in with email\"]')";
+    console.log("Submitting info");
+    const loginSelector = '.submit-button[value="Sign in with email"]';
     await page.waitFor(loginSelector);
     await page.click(loginSelector);
     await page.waitForSelector('$(".user_pic")');
 
+    console.log("Scraping transactions");
     await scrapePage(page, 1);
 
     await browser.close();
