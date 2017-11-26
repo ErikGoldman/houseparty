@@ -10,16 +10,27 @@ export class Donation {
   @Column()
   amount: number;
 
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
   static existsInDb(nbId: string) {
     return Connection.getRepository(Donation).findOne({ nbId })
     .then((donation) => {
       return donation !== undefined;
+    });
+  }
+
+  static find(name: string, email:string): Promise<Donation | undefined> {
+    return Connection.getRepository(Donation).findOne({ email })
+    .then((emailDonation) => {
+      if (emailDonation) {
+        return emailDonation;
+      }
+
+      return Connection.getRepository(Donation).findOne({ name });
     });
   }
 

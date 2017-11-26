@@ -19,11 +19,11 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
 
   const profileLinks: string[] = await page.$$eval(".signup-info-row a", elems => elems.map((e: any) => e.href));
   const emailWithMailto = profileLinks.filter((href) => href.startsWith("mailto"))
+  let email = null;
   if (emailWithMailto.length !== 1) {
     console.log(`Error: could not get email from ${profileLinks}`);
-    return;
   }
-  const email = emailWithMailto[0].substr("mailto:".length);
+  email = emailWithMailto[0].substr("mailto:".length);
 
   const donationRowInfo: string[] = await page.$$eval(".bs-row h2", elems => elems.map((e: any) => e.innerHTML));
   if (donationRowInfo.length !== 1) {
@@ -47,7 +47,7 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
   await donation.save();
 }
 
-const scrapePage = async (page: puppeteer.Page, pageNum: number) => {
+const scrapePage = async (page: puppeteer.Page, pageNum: number, forceAllPages?: boolean) => {
   console.log(`Scraping page ${pageNum}`);
 
   await page.goto(`https://sonja2018.nationbuilder.com/admin/financial_transactions?page=${pageNum}`);
@@ -74,10 +74,10 @@ const scrapePage = async (page: puppeteer.Page, pageNum: number) => {
         })();
       }
       await getDonationInfo(page, donationLink, donationId);
-      if (i === links.length - 1) {
+      if (i === links.length - 1 || forceAllPages) {
         console.log(`Got to last link and we didn't have it -- moving to page ${pageNum + 1}`);
         // we didn't have info for the last item -- go back one page, too
-        // scrapePage(page, pageNum + 1);
+        await scrapePage(page, pageNum + 1);
       }
     }
   }
@@ -117,7 +117,7 @@ export const scrapeNationbuilder = (req: express.Request, res: express.Response)
     await page.waitForSelector('.user_pic');
 
     console.log("Scraping transactions");
-    await scrapePage(page, 1);
+    await scrapePage(page, 1, req.query.forceAllPages);
 
     await browser.close();
   })();

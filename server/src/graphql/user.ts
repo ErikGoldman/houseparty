@@ -1,6 +1,7 @@
 import { GraphQLBoolean, GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLList, GraphQLNonNull } from "graphql";
  
 import { User } from "../entity/user";
+import { Donation } from "../entity/donation";
 import { GraphQLFloat } from "graphql/type/scalars";
 import { Houseparty } from "../entity/houseparty";
 
@@ -9,8 +10,8 @@ export const GraphUser = new GraphQLObjectType({
   fields: () => ({
     displayName: { type: GraphQLString, },
     donatedAmount: {
-      resolve: (root: User, {}, req: Express.Request, fieldASTs: any) => {
-        return 0;
+      resolve: (user: User, {}, req: Express.Request, fieldASTs: any) => {
+        return Donation.find(user.displayName, user.email);
       },
       type: GraphQLFloat
     },
