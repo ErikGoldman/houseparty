@@ -44,7 +44,7 @@ export const scrapeNationbuilder = (req: express.Request, res: express.Response)
     const loginSelector = '.submit-button[value="Sign in with email"]';
     await page.waitFor(loginSelector);
     await page.click(loginSelector);
-    await page.waitForSelector('$(".user_pic")');
+    await page.waitForSelector('.user_pic');
 
     console.log("Scraping transactions");
     await scrapePage(page, 1);
