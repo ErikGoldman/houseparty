@@ -7,6 +7,7 @@ import * as typeorm from "typeorm";
 import { User } from "./entity/user";
 import { Invite } from "./entity/invite";
 import { Houseparty } from "./entity/houseparty";
+import { Donation } from "./entity/donation";
 
 export let Connection: typeorm.Connection;
 
@@ -31,6 +32,7 @@ export function Connect() {
     password: connectionOptions.password as string,
     database: connectionOptions.database as string,
     entities: [
+      Donation,
       Houseparty,
       Invite,
       User,
