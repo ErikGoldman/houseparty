@@ -17,7 +17,7 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
   }
   const name = nameField[1];
 
-  const profileLinks: string[] = await page.$$eval(".signup-info-row a", elem => elem.href);
+  const profileLinks: string[] = await page.$$eval(".signup-info-row a", elems => elems.map((e: any) => e.href));
   const emailWithMailto = profileLinks.filter((href) => href.startsWith("mailto"))
   if (emailWithMailto.length !== 1) {
     console.log(`Error: could not get email from ${profileLinks}`);
@@ -25,7 +25,7 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
   }
   const email = emailWithMailto[0].substr("mailto:".length);
 
-  const donationRowInfo: string[] = await page.$$eval(".bs-row h2", elem => elem.innerHTML);
+  const donationRowInfo: string[] = await page.$$eval(".bs-row h2", elems => elems.map((e: any) => e.innerHTML));
   if (donationRowInfo.length !== 1) {
     console.log(`Error: donation row weirdness ${donationRowInfo}`);
     return;
