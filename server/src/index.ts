@@ -14,6 +14,7 @@ import { authenticationRouter } from "./auth";
 import { Connect } from "./db";
 import { GQLSchema } from "./graphql/schema";
 import { Log } from "./logger";
+import { scrapeNationbuilder } from "./scraper";
 
 const RedisStore = _RedisStore(expressSession);
 
@@ -66,6 +67,10 @@ Connect()
     schema: GQLSchema,
     graphiql: true,
   }));
+
+  app.get("/scrapeNationbuilder", (req, res, next) => {
+    scrapeNationbuilder(req, res);
+  });
 
   app.use((req, res, next) => {
     res.sendFile(path.join(__dirname, "../../client/static", "index.html"));
