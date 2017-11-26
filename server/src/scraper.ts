@@ -42,7 +42,7 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
 
   const donation = new Donation();
   donation.amount = amount;
-  donation.email = email;
+  donation.email = email as string;
   donation.name = name;
   donation.nbId = donationId;
   await donation.save();

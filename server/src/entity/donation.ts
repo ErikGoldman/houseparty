@@ -11,7 +11,7 @@ export class Donation {
   amount: number;
 
   @Column({ nullable: true })
-  email: string | null;
+  email: string;
 
   @Column()
   name: string;
