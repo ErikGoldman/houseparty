@@ -11,7 +11,10 @@ export const GraphUser = new GraphQLObjectType({
     displayName: { type: GraphQLString, },
     donatedAmount: {
       resolve: (user: User, {}, req: Express.Request, fieldASTs: any) => {
-        return Donation.find(user.displayName, user.email);
+        return Donation.find(user.displayName, user.email)
+        .then((donations) => {
+          return (donations || []).map((d) => d.amount).reduce((amount, total) => total + amount, 0);
+        });
       },
       type: GraphQLFloat
     },

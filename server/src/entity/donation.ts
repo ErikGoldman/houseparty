@@ -23,14 +23,14 @@ export class Donation {
     });
   }
 
-  static find(name: string, email:string): Promise<Donation | undefined> {
-    return Connection.getRepository(Donation).findOne({ email })
+  static find(name: string, email:string): Promise<Donation[] | undefined> {
+    return Connection.getRepository(Donation).find({ email })
     .then((emailDonation) => {
       if (emailDonation) {
         return emailDonation;
       }
 
-      return Connection.getRepository(Donation).findOne({ name });
+      return Connection.getRepository(Donation).find({ name });
     });
   }
 
