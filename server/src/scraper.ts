@@ -10,12 +10,12 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
 
   await page.goto(donationUrl);
   await page.waitFor(".signup-name");
-  const nameField = await page.$eval(".signup-name", elem => elem.textContent.match(/\s*(.*)\s*\(.*\)/));
+  const nameField = await page.$eval(".signup-name", elem => elem.textContent.match(/^\s*(.+?)(\s+\(.*\))?$/));
   if (nameField === null) {
     console.log(`Error: could not parse name ${nameField}`);
     return;
   }
-  const name = (nameField[1] as string).toLowerCase();
+  const name = (nameField[1] as string).toLowerCase().trim();
 
   const profileLinks: string[] = await page.$$eval(".signup-info-row a", elems => elems.map((e: any) => e.href));
   const emailWithMailto = profileLinks.filter((href) => href.startsWith("mailto"))
@@ -23,7 +23,7 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
   if (emailWithMailto.length !== 1) {
     console.log(`Error: could not get email from ${profileLinks}`);
   } else {
-    email = emailWithMailto[0].toLowerCase().substr("mailto:".length);
+    email = emailWithMailto[0].toLowerCase().substr("mailto:".length).trim();
   }
 
   const donationRowInfo: string[] = await page.$$eval(".bs-row h2", elems => elems.map((e: any) => e.innerHTML));
@@ -80,6 +80,8 @@ const scrapePage = async (page: puppeteer.Page, pageNum: number, forceAllPages?:
         // we didn't have info for the last item -- go back one page, too
         await scrapePage(page, pageNum + 1);
       }
+    } else {
+      console.log(`We've already seen ${donationId}`);
     }
   }
 }
@@ -119,6 +121,8 @@ export const scrapeNationbuilder = (req: express.Request, res: express.Response)
 
     console.log("Scraping transactions");
     await scrapePage(page, 1, req.query.forceAllPages);
+
+    console.log("Done scraping");
 
     await browser.close();
   })();
