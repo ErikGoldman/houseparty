@@ -24,11 +24,14 @@ export class Donation {
   }
 
   static find(name: string, email:string): Promise<Donation[] | undefined> {
-    return Connection.getRepository(Donation).find({ email })
+    return Connection.getRepository(Donation).find({ email: email.toLowerCase() })
     .then((emailDonation) => {
-      return Connection.getRepository(Donation).find({ name })
+      return Connection.getRepository(Donation).find({ name: name.toLowerCase() })
       .then((nameDonation) => {
-        return [...(emailDonation || []), ...(nameDonation || [])];
+        const donationDedup: { [k: string]: Donation } = {};
+        emailDonation.forEach((d) => donationDedup[d.nbId] = d);
+        nameDonation.forEach((d) => donationDedup[d.nbId] = d);
+        return Object.keys(donationDedup).map((k) => donationDedup[k]);
       });
     });
   }

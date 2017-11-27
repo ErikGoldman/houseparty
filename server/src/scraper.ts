@@ -15,7 +15,7 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
     console.log(`Error: could not parse name ${nameField}`);
     return;
   }
-  const name = nameField[1];
+  const name = (nameField[1] as string).toLowerCase();
 
   const profileLinks: string[] = await page.$$eval(".signup-info-row a", elems => elems.map((e: any) => e.href));
   const emailWithMailto = profileLinks.filter((href) => href.startsWith("mailto"))
@@ -23,7 +23,7 @@ const getDonationInfo = async (page: puppeteer.Page, donationUrl: string, donati
   if (emailWithMailto.length !== 1) {
     console.log(`Error: could not get email from ${profileLinks}`);
   } else {
-    email = emailWithMailto[0].substr("mailto:".length);
+    email = emailWithMailto[0].toLowerCase().substr("mailto:".length);
   }
 
   const donationRowInfo: string[] = await page.$$eval(".bs-row h2", elems => elems.map((e: any) => e.innerHTML));
