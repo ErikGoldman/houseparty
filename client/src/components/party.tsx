@@ -114,10 +114,16 @@ class PartyPage extends React.Component<IProps, IState> {
         <h1>Houseparty</h1>
         <h3 className="party-subtitle">
           hosted by {this.props.host.displayName} on {moment(this.props.host.houseparty.date).format("MM/DD/YY")}
-         </h3>
+        </h3>
+        <div className="instruction-text">
+          (disclaimer: donations update every hour, and if a donation comes from Democracy Engine then it might take a few days to show up.
+          donations match if there's a match on *either* the email address *or* the name, but require an exact match
+          (so "John Smith" won't match "Jonathan Smith", etc.) if you know multiple email addresses for a donor, you may
+          want to add all of them, just in case, or try a few different variations of their name. sorry!)
+        </div>
         <div className="houseparty-invite-list">
           <button disabled={this.state.editor !== undefined} className="pt-button pt-intent-primary" onClick={() => this.addNewUser() }>
-            <span className="pt-icon pt-icon-add" />Invite someone
+            <span className="pt-icon pt-icon-add" />Add someone
           </button>
           <table className="invite-table">
             <tr>
@@ -129,7 +135,7 @@ class PartyPage extends React.Component<IProps, IState> {
             {editor}
             {
               this.props.host.houseparty.invites.length === 0 && !this.state.editor ? (
-                <tr><td colSpan={4}><div className="pt-callout">You haven't invited anyone yet!</div></td></tr>
+                <tr><td colSpan={4}><div className="pt-callout">You haven't added anyone yet!</div></td></tr>
               ) : undefined
             }
             {[...this.props.host.houseparty.invites].sort((a, b) => parseInt(b.date, 10) - parseInt(a.date, 10)).map((invited) => (

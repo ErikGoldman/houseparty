@@ -111,3 +111,10 @@
 .invite-edit-row {
   background: #fbfacf;
 }
+
+.instruction-text {
+  max-width: 800px;
+  color: #666;
+  line-height: normal;
+  font-size: 13px;
+}
